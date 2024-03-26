@@ -44,26 +44,49 @@ import java.util.*;
 	    private ArrayList<NhanVien> danhSachNhanVien = new ArrayList<>();
 	    private Scanner scanner = new Scanner(System.in);
 
-	    public void themNhanVien() {
-	        System.out.print("Nhập họ tên nhân viên: ");
-	        String hoTen = scanner.nextLine();
-	        System.out.print("Nhập tuổi nhân viên: ");
-	        int tuoi = Integer.parseInt(scanner.nextLine());
-	        System.out.print("Nhập giới tính nhân viên: ");
-	        String gioiTinh = scanner.nextLine();
-	        System.out.print("Nhập chức vụ nhân viên: ");
-	        String chucVu = scanner.nextLine();
+	    public void themNhieuNhanVien() {
+	        System.out.print("Nhập số lượng nhân viên cần thêm: ");
+	        int soLuong = Integer.parseInt(scanner.nextLine());
 
-	        NhanVien nv = new NhanVien(hoTen, tuoi, gioiTinh, chucVu);
-	        danhSachNhanVien.add(nv);
-	    }
+	        for (int i = 0; i < soLuong; i++) {
+	            System.out.println("Nhập thông tin cho nhân viên thứ " + (i + 1) + ":");
+	            System.out.print("Nhập họ tên nhân viên: ");
+	            String hoTen = scanner.nextLine();
+	            System.out.print("Nhập tuổi nhân viên: ");
+	            int tuoi = Integer.parseInt(scanner.nextLine());
+	            System.out.print("Nhập giới tính nhân viên: ");
+	            String gioiTinh = scanner.nextLine();
+	            System.out.print("Nhập chức vụ nhân viên: ");
+	            String chucVu = scanner.nextLine();
 
-	    public void hienThiDanhSach() {
-	        for (NhanVien nv : danhSachNhanVien) {
-	            System.out.println(nv);
-	           
+	            NhanVien nv = new NhanVien(hoTen, tuoi, gioiTinh, chucVu);
+	            danhSachNhanVien.add(nv);
 	        }
 	    }
+
+
+	    public void hienThiDanhSach() {
+	        if (danhSachNhanVien.isEmpty()) {
+	            System.out.println("Danh sách nhân viên trống.");
+	            return;
+	        }
+	        
+	        String headerFormat = "║ %-15s │ %-5s │ %-10s │ %-15s ║\n";
+	        String rowFormat = "║ %-15s │ %-5d │ %-10s │ %-15s ║\n";
+	        System.out.println("╔══════════════════════════════════════════════════════════════════════╗");
+	        System.out.println("║                            DANH SÁCH NHÂN VIÊN                       ║");
+	        System.out.println("╠══════════════════════════════════════════════════════════════════════╣");
+	        System.out.printf(headerFormat, "Họ và Tên", "Tuổi", "Giới Tính", "Chức Vụ");
+	        System.out.println("╠══════════════════════════════════════════════════════════════════════╣");
+	        
+	        for (NhanVien nv : danhSachNhanVien) {
+	            System.out.printf(rowFormat, nv.getHoTen(), nv.getTuoi(), nv.getGioiTinh(), nv.getChucVu());
+	        }
+
+	        System.out.println("╚══════════════════════════════════════════════════════════════════════╝");
+	    }
+
+
 
 	    public void timKiemNhanVien(String hoTen) {
 	        for (NhanVien nv : danhSachNhanVien) {
@@ -111,14 +134,15 @@ import java.util.*;
 	    }
 
 
-	    public void sapXepTheoABC() {
+	    public void sapXepTheoTuoi() {
 	        Collections.sort(danhSachNhanVien, (nv1, nv2) -> {
-	            String hoTen1 = nv1.getHoTen().toLowerCase();
-	            String hoTen2 = nv2.getHoTen().toLowerCase();
-	            return hoTen1.compareTo(hoTen2);
+	            int tuoi1 = nv1.getTuoi();
+	            int tuoi2 = nv2.getTuoi();
+	            return Integer.compare(tuoi1, tuoi2);
 	        });
-	        System.out.println("Đã sắp xếp danh sách nhân viên theo thứ tự ABC.");
+	        System.out.println("Đã sắp xếp danh sách nhân viên theo tuổi từ thấp đến cao.");
 	    }
+
 
 	    public void thongKeNhanVien() {
 	        System.out.println("Tổng số nhân viên: " + danhSachNhanVien.size());
@@ -164,23 +188,26 @@ import java.util.*;
 	        int luaChon;
 
 	        do {
-	            System.out.println("=== MENU ===");
-	            System.out.println("1. Thêm nhân viên");
-	            System.out.println("2. Hiển thị danh sách nhân viên");
-	            System.out.println("3. Tìm kiếm nhân viên");
-	            System.out.println("4. Xóa nhân viên");
-	            System.out.println("5. Sửa thông tin nhân viên");
-	            System.out.println("6. Sắp xếp danh sách theo ABC");
-	            System.out.println("7. Thống kê số lượng nhân viên");
-	            System.out.println("8. Đọc từ file");
-	            System.out.println("9. Lưu vào file");
-	            System.out.println("0. Thoát chương trình");
+	            System.out.println("╔════════════════════════════════╗");
+	            System.out.println("║           MENU CHƯƠNG TRÌNH    ║");
+	            System.out.println("╠════════════════════════════════╣");
+	            System.out.println("║ 1. Thêm nhân viên              ║");
+	            System.out.println("║ 2. Hiển thị danh sách nhân viên║");
+	            System.out.println("║ 3. Tìm kiếm nhân viên          ║");
+	            System.out.println("║ 4. Xóa nhân viên               ║");
+	            System.out.println("║ 5. Sửa thông tin nhân viên     ║");
+	            System.out.println("║ 6. Sắp xếp theo tuổi           ║");
+	            System.out.println("║ 7. Thống kê số lượng nhân viên ║");
+	            System.out.println("║ 8. Đọc từ file                 ║");
+	            System.out.println("║ 9. Lưu vào file                ║");
+	            System.out.println("║ 0. Thoát chương trình          ║");
+	            System.out.println("╚════════════════════════════════╝");
 	            System.out.print("Nhập lựa chọn của bạn: ");
 	            luaChon = Integer.parseInt(scanner.nextLine());
 
 	            switch (luaChon) {
 	                case 1:
-	                    quanLy.themNhanVien();
+	                    quanLy.themNhieuNhanVien();
 	                    break;
 	                case 2:
 	                    quanLy.hienThiDanhSach();
@@ -201,7 +228,7 @@ import java.util.*;
 	                    quanLy.suaThongTinNhanVien(tenSua);
 	                    break;
 	                case 6:
-	                	quanLy.sapXepTheoABC();	                    
+	                    quanLy.sapXepTheoTuoi();                    
 	                	break;
 	                case 7:
 	                    quanLy.thongKeNhanVien();
